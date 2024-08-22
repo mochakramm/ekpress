@@ -1,44 +1,39 @@
-//install dulu expres 4.17.1
-const express = require('express')
-const app = express()
-const port = 3000
+const express = require('express');
+const app = express();
+const port = 3000;
+const expressLayouts = require('express-ejs-layouts')
 
-//gunakan ejs
-app.set('view engine', 'ejs')
+// Gunakan ejs untuk view engine
+app.set('view engine', 'ejs');
+app.use(expressLayouts)
 
+app.get('/index', (req, res) => {
+    res.render('index', {
+      
+      title: 'Home',
+      layout: 'layouts/main-layout'
+    });
+});
 
-app.get('/', (req, res) => {
- // res.sendFile('./index.html', {root:__dirname})
-    res.render('index')
-})
 app.get('/about', (req, res) => {
-    res.render('about')
-})
+    res.render('about', {
+      layout: 'layouts/main-layout',
+      title: 'about'});
+});
+
 app.get('/contact', (req, res) => {
-    res.render('contact')
-})
+    res.render('contact', {
+      layout: 'layouts/main-layout',
+      title:'contact'});
+});
 
 
-app.get('/product/:id', (req, res) => {
-  res.send(`product id : ${req.params.id} <br> category id : ${req.query.category}` )
-})
 
-app.use('/',(req,res) => {
-  res.render('index')
-})
-
+// Rute penanganan 404
+app.use((req, res) => {
+  res.status(404).render('404'); // Pastikan ada template 404.ejs
+});
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
-
-
-
-
-
-
-
-
-
-
-
+  console.log(`Example app listening on port ${port}`);
+});
